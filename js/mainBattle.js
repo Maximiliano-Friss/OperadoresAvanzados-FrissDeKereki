@@ -1,5 +1,10 @@
 const pokemon1 = JSON.parse(localStorage.getItem('POKEMON_ELEGIDO'));
 const pokemon2 = JSON.parse(localStorage.getItem('POKEMON_ENEMIGO'));
+
+//Se aplica desestructuración sobre propiedad 'poderes' del objeto 'pokemon1'
+const {poderes} = pokemon1;
+//
+
 const nombrePokemon1 = document.createElement('p');
 nombrePokemon1.innerHTML = `${pokemon1.nombre}`;
 nombrePokemon1.classList.add('p-pokemon1', 'animate__animated', 'animate__fadeInRight');
@@ -98,24 +103,27 @@ function juegaEnemigo() {
     poder2 = pokemon2.poderes[poderAlAzar(pokemon2)];
     btnContinue.onclick = () => {
         msg0.innerHTML = `${pokemon2.nombre} enemigo usó ${poder2.identificador}!`;
+        totalDamage2 = Math.round(f2*(poder2.damage/pokemon1.defensa));
         if(lograAtacar(poder2, pokemon2, ENEMIGO)){
-            btnContinue.onclick = () => {
-                totalDamage2 = Math.round(f2*(poder2.damage/pokemon1.defensa));
-                pokemon1.salud -= totalDamage2;
-                pokemon1.salud = pokemon1.salud > 0 ? pokemon1.salud : 0;
-                f1 *= poder2.efectoEnAtaqueEnemigo;
-                pokemon2.defensa *= poder2.efectoEnDefensaPropia;
-                pokemon1.poderes[poderAlAzar(pokemon1)].probabilidadExito *= poder2.efectoEnExitoEnemigo;
-                msg0.innerHTML = `${pokemon1.nombre} recibe ${totalDamage2} de daño!`;
-                checkStatus();
-            }
+            enemigoAtaca();
         } else {
-            btnContinue.onclick = () => {
-                clearTextBox();
-            }
+            clearTextBox();
         }
     }
 }
+
+function enemigoAtaca() {
+    btnContinue.onclick = () => {
+        pokemon1.salud -= totalDamage2;
+        pokemon1.salud = pokemon1.salud > 0 ? pokemon1.salud : 0;
+        f1 *= poder2.efectoEnAtaqueEnemigo;
+        pokemon2.defensa *= poder2.efectoEnDefensaPropia;
+        poderes[poderAlAzar(pokemon1)].probabilidadExito *= poder2.efectoEnExitoEnemigo;
+        msg0.innerHTML = `${pokemon1.nombre} recibe ${totalDamage2} de daño!`;
+        checkStatus();
+    }
+}
+
 
 function usuarioAtaca() {
     btnContinue.onclick = () => {
@@ -141,11 +149,11 @@ function checkStatus() {
 }
 
 function juegaUsuario() {
-    for (const poder of pokemon1.poderes){
+    for (const poder of poderes){
         const btnPower = document.createElement('button');
         btnPower.innerHTML = poder.identificador;
         battleContainer.appendChild(btnPower);
-        btnPower.classList.add(`btn-power-${pokemon1.poderes.indexOf(poder)}`);
+        btnPower.classList.add(`btn-power-${poderes.indexOf(poder)}`);
     
         btnPower.onmouseover = () => {
             battleContainer.appendChild(infoPoder);

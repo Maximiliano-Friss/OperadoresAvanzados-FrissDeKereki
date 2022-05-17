@@ -32,7 +32,7 @@ constructor(identificador, damage, type, probabilidadExito, efectoEnAtaqueEnemig
     this.probabilidadExito = probabilidadExito;
     this.efectoEnAtaqueEnemigo = efectoEnAtaqueEnemigo;
     this.efectoEnDefensaPropia = efectoEnDefensaPropia;
-    this.efectoEnExitoEnemigo = efectoEnExitoEnemigo;
+    this.efectoEnExitoEnemigo = efectoEnExitoEnemigo; //Probar agregar otro parametro que sea mensaje especial, y que lo tengan los que no hacen daño. Los que si hacen daño que sea null. Luego, ms0.innerHTML = pokemon1?.special? || `${pokemon2.nombre} enemigo usó ${poder2.identificador}!`
     }
 }
 
